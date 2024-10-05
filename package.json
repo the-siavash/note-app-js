@@ -1,0 +1,13 @@
+{
+  "name": "note-app",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "Siavash Pargoli",
+  "license": "ISC",
+  "description": "Persian Note App, written with JS.",
+  "devDependencies": {
+    "persian-date": "^1.1.0"
+  }
+}
