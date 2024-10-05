@@ -14,6 +14,7 @@ export default class App {
     this.notes = notes;
 
     this.view.renderNoteComponents(this.notes);
+    this.view.updateNoteNumbers(this.notes.length);
 
     if (this.selectedNote) {
       this.view.updateSelectedNote(this.selectedNote.id);

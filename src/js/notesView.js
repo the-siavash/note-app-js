@@ -122,6 +122,10 @@ export default class NotesView {
     this.root.querySelector('#note-date').textContent = this.#getPersianDate(editedAt, 'dddd DD MMMM YYYY');
   }
 
+  updateNoteNumbers(notesLength) {
+    document.querySelector('#note-numbers').textContent = notesLength;
+  }
+
   updateNoteListScrollPosition() {
     this.root.querySelector('.notes__list').scrollTo(0, 0);
   }
