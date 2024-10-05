@@ -65,4 +65,29 @@ export default class NotesAPI {
     LocalStorage.saveNotesData(notes);
     return note;
   }
+
+  static updateNoteTitle(id, title) {
+    const notes = this.getNotes();
+    const note = notes.find((note) => note.id === id);
+    note.setTitle(title);
+    LocalStorage.saveNotesData(notes);
+  }
+
+  static updateNoteContent(id, content) {
+    const notes = this.getNotes();
+    const note = notes.find((note) => note.id === id);
+    note.setContent(content);
+    LocalStorage.saveNotesData(notes);
+  }
+  
+  static getUpdatedAt(id) {
+    const notes = this.getNotes();
+    const note = notes.find((note) => note.id === id);
+    return note.updatedAt;
+  }
+
+  static findNote(id) {
+    const notes = this.getNotes();
+    return notes.find((note) => note.id === id);
+  }
 }

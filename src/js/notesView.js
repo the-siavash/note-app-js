@@ -45,9 +45,10 @@ export default class NotesView {
       </div>
     </section>`;
 
-    const { onNoteAdd, onNoteSelect } = eventHandlers;
+    const { onNoteAdd, onNoteSelect, onNoteEdit } = eventHandlers;
     this.onNoteAdd = onNoteAdd;
     this.onNoteSelect = onNoteSelect;
+    this.onNoteEdit = onNoteEdit;
 
     const addNoteButton = this.root.querySelector('#note-add');
     const noteTitle = document.querySelector('#note-title');

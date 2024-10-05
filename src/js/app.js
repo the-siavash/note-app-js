@@ -35,6 +35,13 @@ export default class App {
         this.view.renderSelectedNote(this.selectedNote);
         this.view.updateNotePreviewVisibility(true);
       },
+      onNoteEdit: (editedTitle, editedContent) => {
+        NotesAPI.updateNoteTitle(this.selectedNote.id, editedTitle);
+        NotesAPI.updateNoteContent(this.selectedNote.id, editedContent);
+        this.view.updateEditedNoteDate(NotesAPI.getUpdatedAt(this.selectedNote.id));
+        this.view.updateNoteListScrollPosition();
+        this.#refreshNotes(this.notes);
+      },
     };
   }
 }
