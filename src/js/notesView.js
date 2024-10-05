@@ -114,6 +114,8 @@ export default class NotesView {
     this.root.querySelector('#note-remove').addEventListener('click', () => {
       this.onNoteDelete(note.id);
     });
+
+    this.#setNoteColor(note);
   }
 
   updateSelectedNote(noteId) {
@@ -176,6 +178,15 @@ export default class NotesView {
       notesSidebar.querySelector('.notes__list').classList.remove('hide');
       togglerButton.classList.toggle('rotate');
       this.updateNoteListScrollPosition();
+    }
+  }
+
+  #setNoteColor(note) {
+    const noteChangeColorButton = this.root.querySelector('#note-change-color');
+    for (const [colorName, colorCode] of Object.entries(note.getColors)) {
+      if (note.color === colorName) {
+        noteChangeColorButton.firstElementChild.style.fill = colorCode;
+      }
     }
   }
 }

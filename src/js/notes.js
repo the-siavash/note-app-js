@@ -29,6 +29,10 @@ class Note {
     return colorNames[Math.floor(Math.random() * colorNames.length)];
   }
 
+  get getColors() {
+    return this.#colors;
+  }
+
   setColor(color) {
     this.color = color;
   }
