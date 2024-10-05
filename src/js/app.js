@@ -4,11 +4,37 @@ import NotesView from './notesView.js';
 export default class App {
   constructor(root) {
     this.view = new NotesView(root, this.#eventHandlers());
+    this.notes = [];
+    this.selectedNote = null;
+    this.#refreshNotes();
+  }
+
+  #refreshNotes() {
+    const notes = NotesAPI.getNotes();
+    this.notes = notes;
+
+    this.view.renderNoteComponents(this.notes);
+
+    if (this.selectedNote) {
+      this.view.updateSelectedNote(this.selectedNote.id);
+    }
   }
 
   #eventHandlers() {
     return {
-      onNoteAdd: () => {},
+      onNoteAdd: () => {
+        this.selectedNote = NotesAPI.createNote();
+        this.view.renderSelectedNote(this.selectedNote);
+        this.view.updateNoteListScrollPosition();
+        this.view.updateNotePreviewVisibility(true);
+        this.#refreshNotes();
+      },
+      onNoteSelect: (noteId) => {        
+        this.selectedNote = this.notes.find((note) => note.id === noteId);
+        this.view.updateSelectedNote(noteId);
+        this.view.renderSelectedNote(this.selectedNote);
+        this.view.updateNotePreviewVisibility(true);
+      },
     };
   }
 }

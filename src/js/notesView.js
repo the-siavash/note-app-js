@@ -45,12 +45,25 @@ export default class NotesView {
       </div>
     </section>`;
 
+    const { onNoteAdd, onNoteSelect } = eventHandlers;
+    this.onNoteAdd = onNoteAdd;
+    this.onNoteSelect = onNoteSelect;
+
     const addNoteButton = this.root.querySelector('#note-add');
     const noteTitle = document.querySelector('#note-title');
     const noteContent = document.querySelector('#note-content');
     
     addNoteButton.addEventListener('click', () => {
+      this.onNoteAdd();
       this.#handleMiniSidebarToggler();
+    });
+
+    [noteTitle, noteContent].forEach((field) => {
+      field.addEventListener('input', () => {
+        const editedTitle = noteTitle.value.trim();
+        const editedContent = noteContent.value.trim();
+        this.onNoteEdit(editedTitle, editedContent);
+      });
     });
 
     // hide note-preview when any note is not selected
@@ -58,6 +71,54 @@ export default class NotesView {
 
     // sidebar toggler functionality
     this.#handleSidebarToggler();
+  }
+
+  #createNoteComponent({ id, title, content, updatedAt, color }) {
+    const date = this.#getPersianDate(updatedAt);
+    const note = document.createElement('li');
+    note.dataset.id = id;
+    note.classList.add('notes__list-item', `color-${color}`);
+    note.innerHTML = `
+      <small class="notes__small-date">${date}</small>
+      <h2 class="notes__small-title">${title}</h2>
+      <p class="notes__small-body">${content}</p>`;
+    return note;
+  }
+
+  #getPersianDate(date, format = 'DD MMMM YYYY') {
+    return new persianDate(new Date(date)).format(format);
+  }
+
+  renderNoteComponents(notes) {
+    const notesList = this.root.querySelector('.notes__list');
+
+    notesList.innerHTML = '';
+    notes.forEach((note) => {
+      notesList.append(this.#createNoteComponent(note));
+    });
+
+    notesList.querySelectorAll('.notes__list-item').forEach((note) => {
+      note.addEventListener('click', () => {
+        this.onNoteSelect(note.dataset.id);
+      });
+    });
+  }
+
+  renderSelectedNote(note) {    
+    this.root.querySelector('#note-date').textContent = this.#getPersianDate(note.updatedAt, 'dddd DD MMMM YYYY');
+    this.root.querySelector('#note-title').value = note.title;
+    this.root.querySelector('#note-content').value = note.content;
+  }
+
+  updateSelectedNote(noteId) {
+    this.root.querySelectorAll('.notes__list-item').forEach((noteItem) => {
+      noteItem.classList.remove('notes__list-item--selected');
+      if (noteItem.dataset.id === noteId) noteItem.classList.add('notes__list-item--selected');
+    });
+  }
+
+  updateEditedNoteDate(editedAt) {
+    this.root.querySelector('#note-date').textContent = this.#getPersianDate(editedAt, 'dddd DD MMMM YYYY');
   }
 
   updateNoteListScrollPosition() {

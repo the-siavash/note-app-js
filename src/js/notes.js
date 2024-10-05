@@ -48,4 +48,21 @@ class Note {
   }
 }
 
-export default class NotesAPI {}
+export default class NotesAPI {
+  static getNotes() {
+    let notes = LocalStorage.getNotesData();
+    notes = notes.map((note) => new Note({ ...note }));
+    notes.sort((a, b) => {
+      return (new Date(a.updatedAt) > new Date(b.updatedAt)) ? -1 : 1;
+    });
+    return notes;
+  }
+
+  static createNote() {
+    const notes = this.getNotes();
+    const note = new Note({});
+    notes.push(note);
+    LocalStorage.saveNotesData(notes);
+    return note;
+  }
+}
