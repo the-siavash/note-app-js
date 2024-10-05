@@ -43,6 +43,13 @@ export default class App {
         this.view.updateNoteListScrollPosition();
         this.#refreshNotes(this.notes);
       },
+      onNoteDelete: (noteId) => {
+        if (noteId === this.selectedNote.id) {
+          NotesAPI.removeNote(noteId);
+          this.#refreshNotes();
+          this.view.updateNotePreviewVisibility(false);
+        }
+      },
     };
   }
 }

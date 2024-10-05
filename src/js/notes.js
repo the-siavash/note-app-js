@@ -90,4 +90,10 @@ export default class NotesAPI {
     const notes = this.getNotes();
     return notes.find((note) => note.id === id);
   }
+
+  static removeNote(id) {
+    let notes = this.getNotes();
+    notes = notes.filter((note) => note.id !== id);
+    LocalStorage.saveNotesData(notes);
+  }
 }

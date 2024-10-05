@@ -45,10 +45,11 @@ export default class NotesView {
       </div>
     </section>`;
 
-    const { onNoteAdd, onNoteSelect, onNoteEdit } = eventHandlers;
+    const { onNoteAdd, onNoteSelect, onNoteEdit, onNoteDelete } = eventHandlers;
     this.onNoteAdd = onNoteAdd;
     this.onNoteSelect = onNoteSelect;
     this.onNoteEdit = onNoteEdit;
+    this.onNoteDelete = onNoteDelete;
 
     const addNoteButton = this.root.querySelector('#note-add');
     const noteTitle = document.querySelector('#note-title');
@@ -109,6 +110,10 @@ export default class NotesView {
     this.root.querySelector('#note-date').textContent = this.#getPersianDate(note.updatedAt, 'dddd DD MMMM YYYY');
     this.root.querySelector('#note-title').value = note.title;
     this.root.querySelector('#note-content').value = note.content;
+
+    this.root.querySelector('#note-remove').addEventListener('click', () => {
+      this.onNoteDelete(note.id);
+    });
   }
 
   updateSelectedNote(noteId) {
