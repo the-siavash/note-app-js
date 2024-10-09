@@ -1,3 +1,5 @@
+const searchInput = document.querySelector('#search-box');
+
 export default class NotesView {
   constructor(root, eventHandlers) {
     this.root = root;
@@ -45,15 +47,20 @@ export default class NotesView {
       </div>
     </section>`;
 
-    const { onNoteAdd, onNoteSelect, onNoteEdit, onNoteDelete } = eventHandlers;
+    const { onNoteAdd, onNoteSelect, onNoteEdit, onNoteDelete, onSearch } = eventHandlers;
     this.onNoteAdd = onNoteAdd;
     this.onNoteSelect = onNoteSelect;
     this.onNoteEdit = onNoteEdit;
     this.onNoteDelete = onNoteDelete;
+    this.onSearch = onSearch;
 
     const addNoteButton = this.root.querySelector('#note-add');
-    const noteTitle = document.querySelector('#note-title');
-    const noteContent = document.querySelector('#note-content');
+    const noteTitle = this.root.querySelector('#note-title');
+    const noteContent = this.root.querySelector('#note-content');
+
+    searchInput.addEventListener('input', (event) => {
+      this.onSearch(event.target.value.trim().toLowerCase());
+    });
     
     addNoteButton.addEventListener('click', () => {
       this.onNoteAdd();
@@ -179,6 +186,10 @@ export default class NotesView {
       togglerButton.classList.toggle('rotate');
       this.updateNoteListScrollPosition();
     }
+  }
+
+  clearSearchInput() {
+    searchInput.value = '';
   }
 
   #setNoteColor(note) {

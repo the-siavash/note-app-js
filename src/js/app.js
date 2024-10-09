@@ -5,6 +5,10 @@ export default class App {
   constructor(root) {
     this.view = new NotesView(root, this.#eventHandlers());
     this.notes = [];
+    this.filters = {
+      notes: [],
+      searchChars: '',
+    };
     this.selectedNote = null;
     this.#refreshNotes();
   }
@@ -13,8 +17,16 @@ export default class App {
     const notes = NotesAPI.getNotes();
     this.notes = notes;
 
-    this.view.renderNoteComponents(this.notes);
-    this.view.updateNoteNumbers(this.notes.length);
+    if (this.filters.searchChars) {
+      this.filters.notes = this.notes.filter((note) => {
+        return note.title.toLowerCase().includes(this.filters.searchChars);
+      });
+      this.view.renderNoteComponents(this.filters.notes);
+      this.view.updateNoteNumbers(this.filters.notes.length);
+    } else {
+      this.view.renderNoteComponents(this.notes);
+      this.view.updateNoteNumbers(this.notes.length);
+    }
 
     if (this.selectedNote) {
       this.view.updateSelectedNote(this.selectedNote.id);
@@ -28,6 +40,8 @@ export default class App {
         this.view.renderSelectedNote(this.selectedNote);
         this.view.updateNoteListScrollPosition();
         this.view.updateNotePreviewVisibility(true);
+        this.view.clearSearchInput();
+        this.filters.searchChars = '';
         this.#refreshNotes();
       },
       onNoteSelect: (noteId) => {        
@@ -49,6 +63,10 @@ export default class App {
           this.#refreshNotes();
           this.view.updateNotePreviewVisibility(false);
         }
+      },
+      onSearch: (inputChars) => {
+        this.filters.searchChars = inputChars;
+        this.#refreshNotes();
       },
     };
   }
