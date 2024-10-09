@@ -234,31 +234,20 @@ ul {
   transition: 0.2s ease;
 }
 
-/* account */
-.account {
-  cursor: pointer;
+/* note numbers */
+.note-numbers {
+  cursor: default;
   user-select: none;  
   box-shadow: var(--box-shadow-1);
   border-radius: var(--border-radius-round);
-  padding: 0.5rem 0.8rem;
-  gap: 0.5rem;
+  padding: 0.6rem 1rem;
   background-color: #fff;
 }
-.account:hover {
+.note-numbers:hover {
   box-shadow: var(--box-shadow-1-hover);
 }
-.account__image {
-  display: inline-block;
-  width: 25px;
-  height: 25px;
-  background-color: var(--color-neutral-400);
-  border-radius: 50px;
-}
-
-/* note numbers */
-#note-numbers {
-  cursor: default;
-  padding: 0.6rem 1rem;
+.note-numbers.flex-group {
+  gap: 0.5rem;
 }
 
 /* btn components */
